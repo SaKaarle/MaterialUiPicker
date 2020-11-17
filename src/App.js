@@ -15,6 +15,7 @@ function App() {
   const inputChanged = (e) => {
     setTodo({ ...todo, [e.target.name]: e.target.value });
   };
+  
 
   const addTodo = (e) => {
     e.preventDefault();
