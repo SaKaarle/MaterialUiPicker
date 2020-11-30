@@ -1,21 +1,30 @@
 import "./App.css";
 import React, { useRef, useState } from "react";
+import { KeyboardDateTimePicker,MuiPickersUtilsProvider } from "@material-ui/pickers";
 
+import DateFnsUtils from "@date-io/date-fns";
+import 'date-fns';
+import Button from '@material-ui/core/Button';
 import "./index.css";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine-dark.css";
+import { TextField } from "@material-ui/core";
 
 function App() {
   const [todo, setTodo] = useState({ descript: "", pvm: "", priority: "" });
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [todos, setTodos] = useState([]);
-
   const gridRef = useRef();
 
   const inputChanged = (e) => {
     setTodo({ ...todo, [e.target.name]: e.target.value });
   };
   
+ const changeDateTime = (date) => {
+     setSelectedDate(date);
+     //setTodos();
+};
 
   const addTodo = (e) => {
     e.preventDefault();
@@ -38,8 +47,9 @@ function App() {
   };
 
   const columns = [
-    { headerName: "Desc", field: "descript", sortable: true, filter: true },
-    { headerName: "Date", field: "pvm", sortable: true, filter: true },
+    { headerName: "Desc", field: "descript", sortable: true, filter: true},
+    { headerName: "Date", field: "pvm", sortable: true, filter: true},
+
     {
       headerName: "Priority",
       field: "priority",
@@ -52,28 +62,32 @@ function App() {
     },
   ];
   return (
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
     <div className="App">
       <h1>todo</h1>
-      <input
-        type="text"
-        name="descript"
-        onChange={inputChanged}
-        value={todo.descript}
+
+      <TextField type="text" label="Description" name="descript" onChange={inputChanged} value={todo.descript}/>
+      
+      <KeyboardDateTimePicker
+        variant="inline"
+        ampm={false}
+        label="Date"
+        value={selectedDate}
+        onChange={date=>changeDateTime(date)}
+        onError={console.log}
+        disablePast
+        format="yyyy/MM/dd"
+        
       />
-      <input type="date" name="pvm" onChange={inputChanged} value={todo.pvm} />
-      <input
-        type="text"
-        name="priority"
-        onChange={inputChanged}
-        value={todo.priority}
-      />
-      <button onClick={addTodo}>Add</button>{" "}
-      <button onClick={deleteTodo}>Del</button>
+      
+      <TextField type="text" label="Priority" name="priority" onChange={inputChanged} value={todo.priority}/>
+      <Button variant="contained" color="primary" onClick={addTodo}>Add</Button>{" "}
+      <Button variant="contained" color="secondary" onClick={deleteTodo}>Del</Button>
       <div
         className="ag-theme-alpine-dark"
         style={{
           height: "420px",
-          width: "69%",
+          width: "75%",
           margin: "auto",
         }}
       >
@@ -85,8 +99,16 @@ function App() {
           rowData={todos}
         ></AgGridReact>
       </div>
-    </div>
+      
+    </div></MuiPickersUtilsProvider>
   );
 }
+
+//JOTAIN ERROREITA LÖYTY
+
+// EI toiminut, outoja virheitä mutta:
+// npm i @date-io/date-fns@1.3.13 date-fns kalenteri toimii
+// enää lisätä se ominaisuus
+
 
 export default App;
