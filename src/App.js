@@ -17,13 +17,19 @@ function App() {
   const [todos, setTodos] = useState([]);
   const gridRef = useRef();
 
+  const dateDay = selectedDate.getDate();
+  const dateMonth = selectedDate.getMonth();
+  const dateYear = selectedDate.getFullYear();
+  
+
+  console.log(dateDay,dateMonth,dateYear);
   const inputChanged = (e) => {
     setTodo({ ...todo, [e.target.name]: e.target.value });
   };
   
  const changeDateTime = (date) => {
      setSelectedDate(date);
-     //setTodos();
+     setTodos();
 };
 
   const addTodo = (e) => {
