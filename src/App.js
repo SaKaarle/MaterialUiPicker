@@ -23,6 +23,7 @@ function App() {
   
 
   console.log(dateDay,dateMonth,dateYear);
+
   const inputChanged = (e) => {
     setTodo({ ...todo, [e.target.name]: e.target.value });
   };
@@ -62,9 +63,9 @@ function App() {
       sortable: true,
       filter: true,
       cellStyle: (params) =>
-        params.value === "High" || "high"
+        params.value === "High"
           ? { color: "red" }
-          : { color: "black" },
+          : { color: "white" },
     },
   ];
   return (
